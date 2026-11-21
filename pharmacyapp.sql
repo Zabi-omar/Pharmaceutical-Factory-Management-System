@@ -325,3 +325,10 @@ INTO BATCHES VALUES (14, 'Vitamin C', 4200, 'VitaminC', 'Passed', DATE '2026-02-
 INTO BATCHES VALUES (15, 'Calcium', 3200, 'Calcium', 'Passed', DATE '2026-02-17', DATE '2028-02-17')
 SELECT 1 FROM DUAL;
 
+-- bringing some changes in the employee table's columns
+
+desc employee;
+alter table employee drop column total_pay;
+alter table employee drop column total_salary;
+
+alter table employee add total_salary generated always as (hours_worked * salary_per_hour) virtual;
