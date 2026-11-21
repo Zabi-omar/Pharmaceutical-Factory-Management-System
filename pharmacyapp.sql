@@ -200,3 +200,128 @@ INTO DEPARTMENT VALUES (14, 'Maintenance')
 INTO DEPARTMENT VALUES (15, 'Customer Service')
 SELECT 1 FROM DUAL;
 
+-- inserting data into supplies
+
+INSERT ALL
+INTO SUPPLIER VALUES (1, 'MedSource', 937001001, 'Kabul')
+INTO SUPPLIER VALUES (2, 'GlobalChem', 937001002, 'Herat')
+INTO SUPPLIER VALUES (3, 'PharmaTrade', 937001003, 'Kandahar')
+INTO SUPPLIER VALUES (4, 'BioMaterials', 937001004, 'Mazar')
+INTO SUPPLIER VALUES (5, 'HealthSupply', 937001005, 'Jalalabad')
+INTO SUPPLIER VALUES (6, 'ChemWorld', 937001006, 'Kabul')
+INTO SUPPLIER VALUES (7, 'MediSource', 937001007, 'Herat')
+INTO SUPPLIER VALUES (8, 'PureChem', 937001008, 'Kandahar')
+INTO SUPPLIER VALUES (9, 'AlphaMed', 937001009, 'Kabul')
+INTO SUPPLIER VALUES (10, 'NovaSupply', 937001010, 'Herat')
+INTO SUPPLIER VALUES (11, 'SafeMaterials', 937001011, 'Mazar')
+INTO SUPPLIER VALUES (12, 'PrimeChem', 937001012, 'Kabul')
+INTO SUPPLIER VALUES (13, 'MediGlobal', 937001013, 'Jalalabad')
+INTO SUPPLIER VALUES (14, 'TrustPharma', 937001014, 'Herat')
+INTO SUPPLIER VALUES (15, 'LifeChem', 937001015, 'Kandahar')
+SELECT 1 FROM DUAL;
+
+
+-- inserting data into distributor
+
+INSERT ALL
+INTO DISTRIBUTOR VALUES (1, 'Kabul Distributors', 937002001, 'Kabul')
+INTO DISTRIBUTOR VALUES (2, 'Herat Medical', 937002002, 'Herat')
+INTO DISTRIBUTOR VALUES (3, 'Kandahar Pharma', 937002003, 'Kandahar')
+INTO DISTRIBUTOR VALUES (4, 'Mazar Health', 937002004, 'Mazar')
+INTO DISTRIBUTOR VALUES (5, 'Jalal Pharma', 937002005, 'Jalalabad')
+INTO DISTRIBUTOR VALUES (6, 'Eastern Med', 937002006, 'Nangarhar')
+INTO DISTRIBUTOR VALUES (7, 'Western Health', 937002007, 'Farah')
+INTO DISTRIBUTOR VALUES (8, 'Central Pharma', 937002008, 'Kabul')
+INTO DISTRIBUTOR VALUES (9, 'Afghan Medical', 937002009, 'Herat')
+INTO DISTRIBUTOR VALUES (10, 'Health Express', 937002010, 'Kandahar')
+INTO DISTRIBUTOR VALUES (11, 'MediLink', 937002011, 'Mazar')
+INTO DISTRIBUTOR VALUES (12, 'Care Distributors', 937002012, 'Kabul')
+INTO DISTRIBUTOR VALUES (13, 'Life Distribution', 937002013, 'Herat')
+INTO DISTRIBUTOR VALUES (14, 'Prime Medical', 937002014, 'Jalalabad')
+INTO DISTRIBUTOR VALUES (15, 'Global Health', 937002015, 'Kabul')
+SELECT 1 FROM DUAL;
+
+
+-- inserting data into customer table
+
+INSERT ALL
+INTO CUSTOMER VALUES (1, 'City Hospital', 'Hospital', '937100001', 'city@gmail.com', 'Kabul')
+INTO CUSTOMER VALUES (2, 'Health Clinic', 'Clinic', '937100002', 'health@gmail.com', 'Herat')
+INTO CUSTOMER VALUES (3, 'Life Pharmacy', 'Pharmacy', '937100003', 'life@gmail.com', 'Kandahar')
+INTO CUSTOMER VALUES (4, 'Care Hospital', 'Hospital', '937100004', 'care@gmail.com', 'Mazar')
+INTO CUSTOMER VALUES (5, 'Hope Clinic', 'Clinic', '937100005', 'hope@gmail.com', 'Kabul')
+INTO CUSTOMER VALUES (6, 'Med Pharmacy', 'Pharmacy', '937100006', 'med@gmail.com', 'Herat')
+INTO CUSTOMER VALUES (7, 'Unity Hospital', 'Hospital', '937100007', 'unity@gmail.com', 'Jalalabad')
+INTO CUSTOMER VALUES (8, 'Green Clinic', 'Clinic', '937100008', 'green@gmail.com', 'Kabul')
+INTO CUSTOMER VALUES (9, 'Trust Pharmacy', 'Pharmacy', '937100009', 'trust@gmail.com', 'Herat')
+INTO CUSTOMER VALUES (10, 'Royal Hospital', 'Hospital', '937100010', 'royal@gmail.com', 'Kandahar')
+INTO CUSTOMER VALUES (11, 'Family Clinic', 'Clinic', '937100011', 'family@gmail.com', 'Mazar')
+INTO CUSTOMER VALUES (12, 'Prime Pharmacy', 'Pharmacy', '937100012', 'prime@gmail.com', 'Kabul')
+INTO CUSTOMER VALUES (13, 'National Hospital', 'Hospital', '937100013', 'national@gmail.com', 'Herat')
+INTO CUSTOMER VALUES (14, 'New Life Clinic', 'Clinic', '937100014', 'newlife@gmail.com', 'Kandahar')
+INTO CUSTOMER VALUES (15, 'Smart Pharmacy', 'Pharmacy', '937100015', 'smart@gmail.com', 'Jalalabad')
+SELECT 1 FROM DUAL;
+
+
+-- inserting into expense table
+
+INSERT ALL
+INTO EXPENSE VALUES (1, 'Electricity', 1200, DATE '2026-01-05', 'Cash', 'Monthly electricity')
+INTO EXPENSE VALUES (2, 'Water', 300, DATE '2026-01-08', 'Cash', 'Water bill')
+INTO EXPENSE VALUES (3, 'Rent', 5000, DATE '2026-01-10', 'Bank', 'Factory rent')
+INTO EXPENSE VALUES (4, 'Transport', 1800, DATE '2026-01-12', 'Cash', 'Delivery transport')
+INTO EXPENSE VALUES (5, 'Maintenance', 2500, DATE '2026-01-15', 'Bank', 'Machine repair')
+INTO EXPENSE VALUES (6, 'Internet', 600, DATE '2026-01-18', 'Cash', 'Internet bill')
+INTO EXPENSE VALUES (7, 'Salary', 15000, DATE '2026-01-20', 'Bank', 'Staff salaries')
+INTO EXPENSE VALUES (8, 'Packaging', 3200, DATE '2026-02-02', 'Cash', 'Packaging materials')
+INTO EXPENSE VALUES (9, 'Fuel', 1400, DATE '2026-02-05', 'Cash', 'Generator fuel')
+INTO EXPENSE VALUES (10, 'Marketing', 4000, DATE '2026-02-08', 'Bank', 'Advertising')
+INTO EXPENSE VALUES (11, 'Cleaning', 500, DATE '2026-02-11', 'Cash', 'Cleaning supplies')
+INTO EXPENSE VALUES (12, 'Insurance', 6000, DATE '2026-02-14', 'Bank', 'Factory insurance')
+INTO EXPENSE VALUES (13, 'Equipment', 8500, DATE '2026-02-17', 'Bank', 'New equipment')
+INTO EXPENSE VALUES (14, 'Stationery', 700, DATE '2026-02-20', 'Cash', 'Office stationery')
+INTO EXPENSE VALUES (15, 'Training', 2200, DATE '2026-02-23', 'Bank', 'Employee training')
+SELECT 1 FROM DUAL;
+
+
+--inserting into raw_materials table
+
+INSERT ALL
+INTO RAW_MATERIALS VALUES (1, 'Paracetamol', 1, 100, 1000)
+INTO RAW_MATERIALS VALUES (2, 'Amoxicillin', 1, 100, 800)
+INTO RAW_MATERIALS VALUES (3, 'Ibuprofen', 1, 150, 900)
+INTO RAW_MATERIALS VALUES (4, 'Aspirin', 1, 100, 700)
+INTO RAW_MATERIALS VALUES (5, 'Caffeine', 1, 50, 500)
+INTO RAW_MATERIALS VALUES (6, 'Starch', 1, 200, 1500)
+INTO RAW_MATERIALS VALUES (7, 'Lactose', 1, 200, 1200)
+INTO RAW_MATERIALS VALUES (8, 'Cellulose', 1, 100, 800)
+INTO RAW_MATERIALS VALUES (9, 'VitaminC', 1, 100, 700)
+INTO RAW_MATERIALS VALUES (10, 'Calcium', 1, 100, 800)
+INTO RAW_MATERIALS VALUES (11, 'Magnesium', 1, 50, 600)
+INTO RAW_MATERIALS VALUES (12, 'Zinc', 1, 50, 500)
+INTO RAW_MATERIALS VALUES (13, 'Gelatin', 1, 100, 900)
+INTO RAW_MATERIALS VALUES (14, 'CitricAcid', 1, 100, 700)
+INTO RAW_MATERIALS VALUES (15, 'Sodium', 1, 100, 800)
+SELECT 1 FROM DUAL;
+
+
+-- inserting into batches table
+
+INSERT ALL
+INTO BATCHES VALUES (1, 'Paracetamol', 5000, 'Paracetamol', 'Passed', DATE '2026-01-05', DATE '2028-01-05')
+INTO BATCHES VALUES (2, 'Amoxicillin', 4000, 'Amoxicillin', 'Passed', DATE '2026-01-08', DATE '2028-01-08')
+INTO BATCHES VALUES (3, 'Ibuprofen', 4500, 'Ibuprofen', 'Passed', DATE '2026-01-12', DATE '2028-01-12')
+INTO BATCHES VALUES (4, 'Aspirin', 3500, 'Aspirin', 'Passed', DATE '2026-01-15', DATE '2028-01-15')
+INTO BATCHES VALUES (5, 'Caffeine', 3000, 'Caffeine', 'Passed', DATE '2026-01-18', DATE '2028-01-18')
+INTO BATCHES VALUES (6, 'Vitamin C', 5000, 'VitaminC', 'Passed', DATE '2026-01-20', DATE '2028-01-20')
+INTO BATCHES VALUES (7, 'Calcium', 2500, 'Calcium', 'Passed', DATE '2026-01-22', DATE '2028-01-22')
+INTO BATCHES VALUES (8, 'Zinc', 2800, 'Zinc', 'Passed', DATE '2026-01-25', DATE '2028-01-25')
+INTO BATCHES VALUES (9, 'Magnesium', 2200, 'Magnesium', 'Passed', DATE '2026-01-28', DATE '2028-01-28')
+INTO BATCHES VALUES (10, 'Paracetamol', 5500, 'Paracetamol', 'Passed', DATE '2026-02-02', DATE '2028-02-02')
+INTO BATCHES VALUES (11, 'Ibuprofen', 4000, 'Ibuprofen', 'Passed', DATE '2026-02-05', DATE '2028-02-05')
+INTO BATCHES VALUES (12, 'Amoxicillin', 3500, 'Amoxicillin', 'Passed', DATE '2026-02-08', DATE '2028-02-08')
+INTO BATCHES VALUES (13, 'Aspirin', 3000, 'Aspirin', 'Passed', DATE '2026-02-11', DATE '2028-02-11')
+INTO BATCHES VALUES (14, 'Vitamin C', 4200, 'VitaminC', 'Passed', DATE '2026-02-14', DATE '2028-02-14')
+INTO BATCHES VALUES (15, 'Calcium', 3200, 'Calcium', 'Passed', DATE '2026-02-17', DATE '2028-02-17')
+SELECT 1 FROM DUAL;
+
