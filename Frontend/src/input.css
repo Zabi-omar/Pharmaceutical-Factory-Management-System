@@ -1,8 +1,10 @@
 
-@import "tailwindcss";
-
 @source "../dashboard.html";
 @source "../JS/**/*.js";
+@source "../pages/**/*.html";
+@source "../components/**/*.html";
+@import "tailwindcss";
+
 
 @layer components {
     .sidebar-link {

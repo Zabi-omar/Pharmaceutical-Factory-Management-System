@@ -1,0 +1,165 @@
+
+<aside
+    id="sidebar"
+    class="fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 -translate-x-full flex-col bg-slate-950 text-white transition-all duration-300 lg:static lg:translate-x-0"
+>
+
+    <!-- Logo -->
+    <div class="flex h-20 shrink-0 items-center justify-between border-b border-white/10 px-4">
+
+        <a href="#" class="flex min-w-0 items-center gap-3">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-xl">
+                💊
+            </div>
+
+            <div class="sidebar-label min-w-0">
+                <h1 class="text-lg font-bold tracking-wide">PharmaFlow</h1>
+                <p class="whitespace-nowrap text-xs text-slate-400">
+                    Factory Management
+                </p>
+            </div>
+        </a>
+
+        <!-- Desktop Collapse Button -->
+        <button
+            id="sidebarToggle"
+            type="button"
+            class="hidden rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white lg:block"
+            title="Collapse sidebar"
+            aria-label="Collapse sidebar"
+        >
+            ⇔
+        </button>
+
+        <!-- Mobile Close Button -->
+        <button
+            id="closeSidebar"
+            type="button"
+            class="rounded-lg p-2 text-xl text-slate-400 transition hover:bg-white/10 hover:text-white lg:hidden"
+            aria-label="Close sidebar"
+        >
+            ✕
+        </button>
+    </div>
+
+
+    <!-- Navigation -->
+    <nav class="flex-1 space-y-7 overflow-y-auto overflow-x-hidden px-3 py-6">
+
+        <!-- Main Menu -->
+        <div>
+            <p class="sidebar-label mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Main Menu
+            </p>
+
+            <div class="space-y-2">
+                <a data-page="dashboard" href="#" title="Dashboard" class="sidebar-link">
+                    <span>📊</span>
+                    <span class="sidebar-label">Dashboard</span>
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Management -->
+        <div>
+            <p class="sidebar-label mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Management
+            </p>
+
+            <div class="space-y-2">
+
+                <a data-page="employees" href="#" title="Employees" class="sidebar-link">
+                    <span>👥</span>
+                    <span class="sidebar-label">Employees</span>
+                </a>
+
+                <a data-page="departments" href="#" title="Departments" class="sidebar-link">
+                    <span>🏢</span>
+                    <span class="sidebar-label">Departments</span>
+                </a>
+
+                <a data-page="medicines" href="#" title="Medicines" class="sidebar-link">
+                    <span>💊</span>
+                    <span class="sidebar-label">Medicines</span>
+                </a>
+
+                <a data-page="raw-materials" href="#" title="Raw Materials" class="sidebar-link">
+                    <span>🧪</span>
+                    <span class="sidebar-label">Raw Materials</span>
+                </a>
+
+                <a data-page="production" href="#" title="Production" class="sidebar-link">
+                    <span>🏭</span>
+                    <span class="sidebar-label">Production</span>
+                </a>
+
+                <a data-page="quality-control" href="#" title="Quality Control" class="sidebar-link">
+                    <span>🔬</span>
+                    <span class="sidebar-label">Quality Control</span>
+                </a>
+
+            </div>
+        </div>
+
+
+        <!-- Business -->
+        <div>
+            <p class="sidebar-label mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Business
+            </p>
+
+            <div class="space-y-2">
+
+                <a data-page="suppliers" href="#" title="Suppliers" class="sidebar-link">
+                    <span>🚚</span>
+                    <span class="sidebar-label">Suppliers</span>
+                </a>
+
+                <a data-page="purchases" href="#" title="Purchases" class="sidebar-link">
+                    <span>📦</span>
+                    <span class="sidebar-label">Purchases</span>
+                </a>
+
+                <a data-page="customers" href="#" title="Customers" class="sidebar-link">
+                    <span>🧑</span>
+                    <span class="sidebar-label">Customers</span>
+                </a>
+
+                <a data-page="sales-orders" href="#" title="Sales Orders" class="sidebar-link">
+                    <span>🛒</span>
+                    <span class="sidebar-label">Sales Orders</span>
+                </a>
+
+                <a data-page="distribution" href="#" title="Distribution" class="sidebar-link">
+                    <span>🚛</span>
+                    <span class="sidebar-label">Distribution</span>
+                </a>
+
+                <a data-page="expenses" href="#" title="Expenses" class="sidebar-link">
+                    <span>💰</span>
+                    <span class="sidebar-label">Expenses</span>
+                </a>
+
+            </div>
+        </div>
+
+    </nav>
+
+
+    <!-- Logout -->
+    <div class="shrink-0 border-t border-white/10 p-4">
+
+        <button
+            id="logoutBtn"
+            type="button"
+            class="sidebar-link w-full text-left hover:bg-red-500/10 hover:text-red-400"
+            title="Logout"
+        >
+            <span>🚪</span>
+            <span class="sidebar-label">Logout</span>
+        </button>
+
+    </div>
+
+</aside>

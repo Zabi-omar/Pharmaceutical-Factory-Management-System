@@ -4,39 +4,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employees | PharmaFlow</title>
+    <title>Employee Management | PharmaFlow</title>
 
     <link rel="stylesheet" href="../assets/css/app.css">
+
     <script src="../JS/modules/employees.js" defer></script>
+    <script src="../JS/modules/sidebar.js" defer></script>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Main layout */
+        .employee-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .employee-content {
+            width: 100%;
+            max-width: 1800px;
+            margin: auto;
+            padding: 36px 38px;
+        }
+
+        /* Header */
+        .employee-topbar {
+            height: 78px;
+            min-height: 78px;
+            padding: 0 32px;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Heading */
+        .employee-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .employee-heading h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 750;
+            color: #0f172a;
+        }
+
+        .employee-heading p {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* Add button */
+        .add-employee-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 0 24px;
+            border: none;
+            border-radius: 11px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .add-employee-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Statistics */
+        .employee-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .employee-stat-card {
+            min-height: 155px;
+            padding: 25px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: .2s;
+        }
+
+        .employee-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .07);
+        }
+
+        .employee-stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .employee-stat-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .employee-stat-number {
+            margin-top: 12px;
+            font-size: 36px;
+            font-weight: 750;
+            line-height: 1.2;
+            color: #0f172a;
+        }
+
+        .employee-stat-description {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .employee-stat-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        /* Directory */
+        .employee-directory {
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+        }
+
+        .employee-directory-header {
+            padding: 25px 27px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .employee-directory-title {
+            font-size: 19px;
+            font-weight: 750;
+            color: #0f172a;
+        }
+
+        .employee-directory-subtitle {
+            margin-top: 6px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Search and filters */
+        .employee-toolbar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 13px;
+            margin-top: 22px;
+        }
+
+        .employee-search-wrapper {
+            position: relative;
+            width: 340px;
+            max-width: 100%;
+        }
+
+        .employee-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .employee-search {
+            display: block;
+            width: 100%;
+            height: 48px;
+            padding: 0 15px 0 45px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .employee-filter {
+            height: 48px;
+            min-width: 175px;
+            padding: 0 35px 0 14px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .employee-search:focus,
+        .employee-filter:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        /* Table */
+        .employee-table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .employee-table {
+            width: 100%;
+            min-width: 950px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .employee-table thead {
+            background: #f8fafc;
+        }
+
+        .employee-table th {
+            padding: 19px 22px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 750;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            white-space: nowrap;
+        }
+
+        .employee-table td {
+            padding: 21px 22px;
+            border-top: 1px solid #edf0f5;
+            color: #475569;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .employee-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .employee-table tbody:empty::after {
+            content: "No employee records found.";
+            display: table-row;
+        }
+
+        .employee-table-footer {
+            padding: 17px 25px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Modal */
         .employee-modal {
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: rgba(15, 23, 42, 0.65);
-            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
             overflow-y: auto;
+            background: rgba(15, 23, 42, .65);
+            backdrop-filter: blur(3px);
+        }
+
+        .employee-modal.hidden {
+            display: none;
         }
 
         .employee-modal-panel {
             width: 100%;
-            max-width: 800px;
-            max-height: 90vh;
+            max-width: 850px;
+            max-height: 92vh;
             overflow-y: auto;
             margin: auto;
-            border-radius: 16px;
-            background: white;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
         }
 
         .employee-modal-header {
             position: sticky;
             top: 0;
             z-index: 2;
-            background: white;
+            background: #fff;
         }
 
-        @media (max-width: 640px) {
+        .employee-modal label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .employee-modal input,
+        .employee-modal select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 13px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: white;
+            font-size: 14px;
+        }
+
+        .employee-modal input:focus,
+        .employee-modal select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        /* Footer */
+        .employee-footer {
+            margin-top: auto;
+            padding: 18px;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .employee-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .employee-content {
+                padding: 25px 18px;
+            }
+
+            .employee-topbar {
+                padding: 0 18px;
+            }
+
+            .employee-toolbar {
+                align-items: stretch;
+            }
+
+            .employee-search-wrapper,
+            .employee-filter {
+                width: 100%;
+                min-width: 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .employee-content {
+                padding: 20px 12px;
+            }
+
+            .employee-heading h1 {
+                font-size: 25px;
+            }
+
+            .employee-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .employee-stat-card {
+                min-height: 135px;
+            }
+
             .employee-modal {
                 padding: 10px;
             }
@@ -48,238 +418,296 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800">
+<body>
 
 <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside id="sidebar"
-        class="fixed inset-y-0 left-0 z-40 flex w-64 -translate-x-full flex-col bg-slate-950 text-white transition-all duration-300 lg:static lg:translate-x-0">
+    <!-- Shared Sidebar -->
+    <div id="sidebar-container" data-root="../"></div>
 
-        <div class="flex h-20 items-center gap-3 border-b border-white/10 px-6">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-xl font-bold">P</div>
-            <div>
-                <h1 class="text-lg font-bold">PharmaFlow</h1>
-                <p class="text-xs text-slate-400">Factory Management</p>
-            </div>
-        </div>
+    <!-- Main Area -->
+    <div class="employee-main flex min-h-screen flex-col">
 
-        <nav class="flex-1 space-y-2 overflow-y-auto px-4 py-6">
-
-            <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">Main Menu</p>
-
-            <a href="../dashboard.html" class="sidebar-link">
-                <span>▦</span> Dashboard
-            </a>
-
-            <p class="mb-3 mt-7 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">Management</p>
-
-            <a href="./employees.html" class="flex items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white">
-                <span>♙</span> Employees
-            </a>
-
-            <a href="#" class="sidebar-link"><span>▤</span> Departments</a>
-            <a href="#" class="sidebar-link"><span>✚</span> Medicines</a>
-            <a href="#" class="sidebar-link"><span>▣</span> Raw Materials</a>
-            <a href="#" class="sidebar-link"><span>⚙</span> Production</a>
-            <a href="#" class="sidebar-link"><span>✓</span> Quality Control</a>
-
-            <p class="mb-3 mt-7 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">Business</p>
-
-            <a href="#" class="sidebar-link"><span>♧</span> Suppliers</a>
-            <a href="#" class="sidebar-link"><span>▧</span> Purchases</a>
-            <a href="#" class="sidebar-link"><span>♧</span> Customers</a>
-            <a href="#" class="sidebar-link"><span>▤</span> Sales Orders</a>
-            <a href="#" class="sidebar-link"><span>⇄</span> Distribution</a>
-            <a href="#" class="sidebar-link"><span>$</span> Expenses</a>
-
-        </nav>
-
-        <div class="border-t border-white/10 p-4">
-            <button id="logoutBtn"
-                class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-400 hover:bg-red-500/10">
-                <span>↪</span> Logout
-            </button>
-        </div>
-    </aside>
-
-    <!-- MOBILE OVERLAY -->
-    <div id="sidebarOverlay" class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
-
-    <!-- MAIN AREA -->
-    <div class="flex min-w-0 flex-1 flex-col">
-
-        <!-- TOPBAR -->
-        <header class="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-8">
+        <!-- Topbar -->
+        <header class="employee-topbar">
 
             <div class="flex items-center gap-4">
-                <button id="menuBtn" class="rounded-lg p-2 text-xl hover:bg-slate-100">☰</button>
+
+                <button
+                    id="menuBtn"
+                    type="button"
+                    class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl hover:bg-slate-100">
+                    ☰
+                </button>
 
                 <div>
-                    <h2 class="text-lg font-bold">Employee Management</h2>
-                    <p class="hidden text-xs text-slate-500 sm:block">Manage your factory workforce</p>
+                    <h2 class="text-lg font-bold text-slate-800">
+                        Employee Management
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Manage your factory workforce
+                    </p>
                 </div>
+
             </div>
 
-            <div class="flex items-center gap-3">
-                <div class="hidden text-right sm:block">
+            <div class="hidden items-center gap-3 sm:flex">
+                <div class="text-right">
                     <p class="text-sm font-semibold">Administrator</p>
                     <p class="text-xs text-slate-500">System Admin</p>
                 </div>
 
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">A</div>
+                <div class="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">
+                    A
+                </div>
             </div>
 
         </header>
 
-        <!-- PAGE CONTENT -->
-        <main class="flex-1 space-y-6 overflow-y-auto p-4 sm:p-8">
 
-            <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900">Employees</h1>
-                    <p class="mt-1 text-sm text-slate-500">View and manage employee records.</p>
-                </div>
+        <!-- Page Content -->
+        <main class="flex-1">
 
-                <button id="addEmployeeBtn"
-                    class="rounded-xl mb-3 bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
-                    + Add Employee
-                </button>
-            </div>
+            <div class="employee-content">
 
-            <!-- STATISTICS -->
-            <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <!-- Breadcrumb -->
+                <p class="mb-5 text-sm font-medium text-blue-600">
+                    Management <span class="mx-1 text-slate-400">/</span> Employees
+                </p>
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <p class="text-sm text-slate-500">Total Employees</p>
-                    <h3 id="totalEmployees" class="mt-3 text-3xl font-bold">0</h3>
-                    <p class="mt-1 text-xs text-slate-400">All registered employees</p>
-                </div>
 
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <p class="text-sm text-slate-500">Active Employees</p>
-                    <h3 id="activeEmployees" class="mt-3 text-3xl font-bold text-green-600">0</h3>
-                    <p class="mt-1 text-xs text-slate-400">Currently active</p>
-                </div>
-
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <p class="text-sm text-slate-500">Inactive Employees</p>
-                    <h3 id="inactiveEmployees" class="mt-3 text-3xl font-bold text-orange-600">0</h3>
-                    <p class="mt-1 text-xs text-slate-400">Currently inactive</p>
-                </div>
-
-                <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <p class="text-sm text-slate-500">Departments</p>
-                    <h3 id="departmentCount" class="mt-3 text-3xl font-bold text-blue-600">0</h3>
-                    <p class="mt-1 text-xs text-slate-400">Departments represented</p>
-                </div>
-
-            </section>
-
-            <!-- EMPLOYEE DIRECTORY -->
-            <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
-                <div class="flex flex-col gap-4 border-b border-slate-100 p-5 lg:flex-row lg:items-center lg:justify-between">
+                <!-- Heading -->
+                <section class="employee-heading mb-8">
 
                     <div>
-                        <h3 class="font-bold text-slate-800">Employee Directory</h3>
-                        <p class="mt-1 text-xs text-slate-500">All registered employee records</p>
+                        <h1>Employees</h1>
+                        <p>View and manage employee records.</p>
                     </div>
 
-                    <div class="flex flex-col gap-3 sm:flex-row">
+                    <button
+                        id="addEmployeeBtn"
+                        type="button"
+                        class="add-employee-btn">
 
-                        <input id="searchInput" type="search"
-                            placeholder="Search name, ID or phone..."
-                            class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-64">
+                        <span class="text-xl">+</span>
+                        Add Employee
 
-                        <select id="departmentFilter"
-                            class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500">
-                            <option value="">All Departments</option>
-                        </select>
+                    </button>
 
-                        <select id="statusFilter"
-                            class="rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500">
-                            <option value="">All Statuses</option>
-                            <option value="Active">Active</option>
-                            <option value="Inactive">Inactive</option>
-                        </select>
+                </section>
+
+
+                <!-- Statistics -->
+                <section class="employee-stats mb-8">
+
+                    <div class="employee-stat-card">
+
+                        <div class="employee-stat-top">
+                            <div>
+                                <p class="employee-stat-label">Total Employees</p>
+                                <h3 id="totalEmployees" class="employee-stat-number">0</h3>
+                            </div>
+
+                            <div class="employee-stat-icon bg-blue-50">👥</div>
+                        </div>
+
+                        <p class="employee-stat-description">All registered employees</p>
 
                     </div>
-                </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full min-w-[850px] text-left text-sm">
 
-                        <thead class="bg-slate-50 text-xs uppercase text-slate-500">
-                            <tr>
-                                <th class="px-5 py-4">Employee</th>
-                                <th class="px-5 py-4">Department</th>
-                                <th class="px-5 py-4">Phone</th>
-                                <th class="px-5 py-4">Role</th>
-                                <th class="px-5 py-4">Salary</th>
-                                <th class="px-5 py-4">Status</th>
-                                <th class="px-5 py-4 text-right">Actions</th>
-                            </tr>
-                        </thead>
+                    <div class="employee-stat-card">
 
-                        <tbody id="employeeTableBody" class="divide-y divide-slate-100">
-                        </tbody>
+                        <div class="employee-stat-top">
+                            <div>
+                                <p class="employee-stat-label">Active Employees</p>
+                                <h3 id="activeEmployees" class="employee-stat-number text-emerald-600">0</h3>
+                            </div>
 
-                    </table>
-                </div>
+                            <div class="employee-stat-icon bg-emerald-50">✓</div>
+                        </div>
 
-                <div class="border-t border-slate-100 px-5 py-4 text-xs text-slate-500">
-                    Showing <span id="showingCount">0</span> employee(s)
-                </div>
+                        <p class="employee-stat-description">Currently active employees</p>
 
-            </section>
+                    </div>
+
+
+                    <div class="employee-stat-card">
+
+                        <div class="employee-stat-top">
+                            <div>
+                                <p class="employee-stat-label">Inactive Employees</p>
+                                <h3 id="inactiveEmployees" class="employee-stat-number text-amber-600">0</h3>
+                            </div>
+
+                            <div class="employee-stat-icon bg-amber-50">Ⅱ</div>
+                        </div>
+
+                        <p class="employee-stat-description">Currently inactive employees</p>
+
+                    </div>
+
+
+                    <div class="employee-stat-card">
+
+                        <div class="employee-stat-top">
+                            <div>
+                                <p class="employee-stat-label">Departments</p>
+                                <h3 id="departmentCount" class="employee-stat-number text-blue-600">0</h3>
+                            </div>
+
+                            <div class="employee-stat-icon bg-purple-50">🏢</div>
+                        </div>
+
+                        <p class="employee-stat-description">Departments represented</p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Employee Directory -->
+                <section class="employee-directory">
+
+                    <div class="employee-directory-header">
+
+                        <h3 class="employee-directory-title">
+                            Employee Directory
+                        </h3>
+
+                        <p class="employee-directory-subtitle">
+                            All registered employee records
+                        </p>
+
+
+                        <!-- Search and Filters -->
+                        <div class="employee-toolbar">
+
+                            <div class="employee-search-wrapper">
+
+                                <span class="employee-search-icon">🔍</span>
+
+                                <input
+                                    id="searchInput"
+                                    type="search"
+                                    placeholder="Search name, ID or phone..."
+                                    class="employee-search">
+
+                            </div>
+
+
+                            <select id="departmentFilter" class="employee-filter">
+                                <option value="">All Departments</option>
+                            </select>
+
+
+                            <select id="statusFilter" class="employee-filter">
+                                <option value="">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Table -->
+                    <div class="employee-table-container">
+
+                        <table class="employee-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                    <th>Salary</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="employeeTableBody">
+                                <!-- Employee rows are generated by employees.js -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <!-- Table Footer -->
+                    <div class="employee-table-footer">
+                        Showing <span id="showingCount">0</span> employee(s)
+                    </div>
+
+                </section>
+
+            </div>
 
         </main>
+
+
+        <!-- Footer -->
+        <footer class="employee-footer">
+            © 2026 PharmaFlow - Pharmaceutical Factory Management System
+        </footer>
+
     </div>
+
 </div>
 
-<!-- ===================================== -->
-<!-- ADD / EDIT EMPLOYEE MODAL -->
-<!-- ===================================== -->
 
-<div id="employeeModal"
-    class="employee-modal hidden items-center justify-center">
+<!-- Employee Modal -->
+<div id="employeeModal" class="employee-modal hidden">
 
     <div class="employee-modal-panel">
 
-        <!-- MODAL HEADER -->
+        <!-- Modal Header -->
         <div class="employee-modal-header flex items-center justify-between border-b border-slate-100 px-6 py-5">
 
             <div>
-                <h2 id="modalTitle" class="text-lg font-bold">Add Employee</h2>
-                <p class="mt-1 text-xs text-slate-500">Enter the employee information below.</p>
+                <h2 id="modalTitle" class="text-xl font-bold text-slate-900">
+                    Add Employee
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Enter employee information below.
+                </p>
             </div>
 
-            <button id="closeModalBtn"
-                class="rounded-lg px-3 py-2 text-xl text-slate-400 hover:bg-slate-100">
-                ×
+            <button
+                id="closeModalBtn"
+                type="button"
+                class="rounded-lg p-2 text-xl text-slate-400 hover:bg-slate-100">
+                ✕
             </button>
 
         </div>
 
-        <!-- MODAL FORM -->
-        <form id="employeeForm" class="space-y-5 p-6">
+
+        <!-- Form -->
+        <form id="employeeForm" class="space-y-3 p-3">
 
             <input type="hidden" id="employeeId">
 
-            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Employee Name *</label>
-                    <input id="employeeName" type="text" required maxlength="100"
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    <label for="employeeName">Employee Name *</label>
+                    <input
+                        id="employeeName"
+                        type="text"
+                        required
                         placeholder="Enter full name">
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Gender *</label>
-                    <select id="gender" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500">
+                    <label for="gender">Gender *</label>
+                    <select id="gender" required>
                         <option value="">Select gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -287,89 +715,114 @@
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Department *</label>
-                    <select id="department" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500">
+                    <label for="department">Department *</label>
+                    <select id="department" required>
                         <option value="">Select department</option>
                         <option>Production</option>
                         <option>Quality Control</option>
                         <option>Human Resources</option>
-                        <option>Finance</option>
-                        <option>Warehouse</option>
-                        <option>Sales</option>
-                        <option>Administration</option>
                         <option>Research and Development</option>
+                        <option>Warehouse</option>
+                        <option>Finance</option>
+                        <option>Sales and Marketing</option>
+                        <option>Administration</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Phone Number *</label>
-                    <input id="phone" type="tel" required maxlength="15"
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    <label for="phone">Phone Number *</label>
+                    <input
+                        id="phone"
+                        type="tel"
+                        required
                         placeholder="Enter phone number">
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Email Address</label>
-                    <input id="email" type="email" maxlength="100"
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    <label for="email">Email Address</label>
+                    <input
+                        id="email"
+                        type="email"
                         placeholder="employee@example.com">
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Hire Date *</label>
-                    <input id="hireDate" type="date" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500">
+                    <label for="hireDate">Hire Date *</label>
+                    <input id="hireDate" type="date" required>
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Employee Role *</label>
-                    <input id="role" type="text" required maxlength="50"
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
-                        placeholder="e.g. Production Manager">
+                    <label for="role">Employee Role *</label>
+                    <input
+                        id="role"
+                        type="text"
+                        required
+                        placeholder="Enter employee role">
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Employment Status *</label>
-                    <select id="status" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500">
+                    <label for="status">Status *</label>
+                    <select id="status" required>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Hours Worked *</label>
-                    <input id="hoursWorked" type="number" min="0" step="0.5" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
+                    <label for="hoursWorked">Hours Worked *</label>
+                    <input
+                        id="hoursWorked"
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        required
                         placeholder="e.g. 160">
                 </div>
 
                 <div>
-                    <label class="mb-2 block text-sm font-medium">Salary Per Hour *</label>
-                    <input id="salaryPerHour" type="number" min="0" step="0.01" required
-                        class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500"
-                        placeholder="e.g. 100">
-                </div>
-
-                <div class="rounded-xl bg-blue-50 p-4 md:col-span-2">
-                    <p class="text-sm font-medium text-blue-700">Calculated Total Salary</p>
-                    <p id="calculatedSalary" class="mt-1 text-2xl font-bold text-blue-800">0.00</p>
-                    <p class="mt-1 text-xs text-blue-600">Hours worked × salary per hour</p>
+                    <label for="salaryPerHour">Salary Per Hour *</label>
+                    <input
+                        id="salaryPerHour"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        required
+                        placeholder="Enter hourly salary">
                 </div>
 
             </div>
 
-            <!-- FORM BUTTONS -->
-            <div class="flex flex-col-reverse justify-end gap-3 border-t border-slate-100 pt-5 sm:flex-row">
 
-                <button type="button" id="cancelModalBtn"
-                    class="rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold hover:bg-slate-50">
+            <!-- Salary Calculation -->
+            <div class="rounded-xl bg-blue-50 p-5">
+                <p class="text-sm font-semibold text-blue-700">
+                    Calculated Total Salary
+                </p>
+
+                <p id="calculatedSalary" class="mt-2 text-2xl font-bold text-blue-800">
+                    0.00
+                </p>
+
+                <p class="mt-1 text-xs text-blue-600">
+                    Hours worked × salary per hour
+                </p>
+            </div>
+
+
+            <!-- Form Buttons -->
+            <div class="flex flex-col-reverse p-2 justify-end gap-3 border-t border-slate-100 pt-5 sm:flex-row">
+
+                <button
+                    id="cancelModalBtn"
+                    type="button"
+                    class="rounded-lg border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">
                     Cancel
                 </button>
 
-                <button type="submit" id="saveEmployeeBtn"
-                    class="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700">
+                <button
+                    id="saveEmployeeBtn"
+                    type="submit"
+                    class="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700">
                     Save Employee
                 </button>
 
@@ -378,10 +831,13 @@
         </form>
 
     </div>
+
 </div>
 
-<!-- TOAST NOTIFICATION -->
-<div id="toast"
+
+<!-- Toast -->
+<div
+    id="toast"
     class="fixed bottom-5 right-5 z-[110] hidden max-w-sm rounded-xl bg-slate-900 px-5 py-4 text-sm font-medium text-white shadow-xl">
 </div>
 

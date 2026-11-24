@@ -1,0 +1,714 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Department Management | PharmaFlow</title>
+
+    <link rel="stylesheet" href="../assets/css/app.css">
+
+    <script src="../JS/modules/departments.js" defer></script>
+    <script src="../JS/modules/sidebar.js" defer></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .department-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .department-content {
+            width: 100%;
+            max-width: 1800px;
+            margin: auto;
+            padding: 36px 38px;
+        }
+
+        /* Topbar */
+        .department-topbar {
+            height: 78px;
+            min-height: 78px;
+            padding: 0 32px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Page heading */
+        .department-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .department-heading h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 750;
+            color: #0f172a;
+        }
+
+        .department-heading p {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* Add button */
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 0 24px;
+            border: none;
+            border-radius: 11px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Statistics */
+        .department-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            min-height: 155px;
+            padding: 25px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: .2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .07);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-number {
+            margin-top: 12px;
+            color: #0f172a;
+            font-size: 36px;
+            font-weight: 750;
+            line-height: 1.2;
+        }
+
+        .stat-description {
+            margin-top: 12px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        /* Department directory */
+        .table-card {
+            overflow: hidden;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+        }
+
+        .table-header {
+            padding: 25px 27px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-title {
+            color: #0f172a;
+            font-size: 19px;
+            font-weight: 750;
+        }
+
+        .table-subtitle {
+            margin-top: 6px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Search */
+        .search-wrapper {
+            position: relative;
+            width: 340px;
+            max-width: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .search-input {
+            display: block;
+            width: 100%;
+            height: 48px;
+            padding: 0 15px 0 45px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: white;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        /* Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .department-table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .department-table thead {
+            background: #f8fafc;
+        }
+
+        .department-table th {
+            padding: 19px 22px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 750;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            white-space: nowrap;
+        }
+
+        .department-table td {
+            padding: 21px 22px;
+            border-top: 1px solid #edf0f5;
+            color: #475569;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .department-table tbody tr {
+            transition: background .2s;
+        }
+
+        .department-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .department-table td button {
+            cursor: pointer;
+        }
+
+        .table-footer {
+            padding: 17px 25px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Modal */
+        .department-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            background: rgba(15, 23, 42, .65);
+            backdrop-filter: blur(3px);
+        }
+
+        .department-modal.hidden {
+            display: none;
+        }
+
+        .department-modal-panel {
+            width: 100%;
+            max-width: 550px;
+            max-height: 92vh;
+            overflow-y: auto;
+            margin: auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
+        }
+
+        .department-modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: white;
+        }
+
+        .department-modal label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .department-modal input {
+            width: 100%;
+            min-height: 48px;
+            padding: 11px 14px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            outline: none;
+            background: white;
+            font-size: 14px;
+        }
+
+        .department-modal input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        /* Footer */
+        .department-footer {
+            margin-top: auto;
+            padding: 18px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .department-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .department-content {
+                padding: 25px 18px;
+            }
+
+            .department-topbar {
+                padding: 0 18px;
+            }
+
+            .table-header {
+                padding: 20px;
+            }
+
+            .search-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .department-content {
+                padding: 20px 12px;
+            }
+
+            .department-heading h1 {
+                font-size: 25px;
+            }
+
+            .department-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                min-height: 135px;
+            }
+
+            .department-modal {
+                padding: 10px;
+            }
+
+            .department-modal-panel {
+                max-height: 95vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="flex min-h-screen">
+
+    <!-- Shared Sidebar -->
+    <div id="sidebar-container" data-root="../"></div>
+
+    <!-- Main Area -->
+    <div class="department-main flex min-h-screen flex-col">
+
+        <!-- Topbar -->
+        <header class="department-topbar">
+
+            <div class="flex items-center gap-4">
+
+                <button
+                    id="menuBtn"
+                    type="button"
+                    class="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-xl hover:bg-slate-100"
+                    aria-label="Toggle sidebar">
+                    ☰
+                </button>
+
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">
+                        Department Management
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Manage your factory departments
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="hidden items-center gap-3 sm:flex">
+                <div class="text-right">
+                    <p class="text-sm font-semibold">Administrator</p>
+                    <p class="text-xs text-slate-500">Factory Management</p>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">
+                    A
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- Content -->
+        <main class="flex-1">
+
+            <div class="department-content">
+
+                <!-- Breadcrumb -->
+                <p class="mb-5 text-sm font-medium text-blue-600">
+                    Management <span class="mx-1 text-slate-400">/</span> Departments
+                </p>
+
+
+                <!-- Heading -->
+                <section class="department-heading mb-8">
+
+                    <div>
+                        <h1>Departments</h1>
+                        <p>View, add, edit and manage factory departments.</p>
+                    </div>
+
+                    <button
+                        id="addDepartmentBtn"
+                        type="button"
+                        class="primary-button">
+
+                        <span class="text-xl">+</span>
+                        Add Department
+
+                    </button>
+
+                </section>
+
+
+                <!-- Statistics -->
+                <section class="department-stats mb-8">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div>
+                                <p class="stat-label">Total Departments</p>
+
+                                <h3 id="totalDepartments" class="stat-number">
+                                    0
+                                </h3>
+                            </div>
+
+                            <div class="stat-icon bg-blue-50">
+                                🏢
+                            </div>
+                        </div>
+
+                        <p class="stat-description">
+                            Registered factory departments
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div>
+                                <p class="stat-label">Department Status</p>
+
+                                <h3 class="stat-number text-emerald-600">
+                                    Active
+                                </h3>
+                            </div>
+
+                            <div class="stat-icon bg-emerald-50">
+                                ✓
+                            </div>
+                        </div>
+
+                        <p class="stat-description">
+                            Department management
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div>
+                                <p class="stat-label">System Module</p>
+
+                                <h3 class="mt-3 text-2xl font-bold text-slate-900">
+                                    Departments
+                                </h3>
+                            </div>
+
+                            <div class="stat-icon bg-purple-50">
+                                ⚙️
+                            </div>
+                        </div>
+
+                        <p class="stat-description">
+                            Factory organization
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Department Directory -->
+                <section class="table-card">
+
+                    <div class="table-header">
+
+                        <h3 class="table-title">
+                            Department Directory
+                        </h3>
+
+                        <p class="table-subtitle">
+                            All registered departments
+                        </p>
+
+                        <div class="mt-5">
+
+                            <div class="search-wrapper">
+
+                                <span class="search-icon">🔍</span>
+
+                                <input
+                                    id="searchDepartment"
+                                    type="text"
+                                    placeholder="Search by department ID or name..."
+                                    class="search-input">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Department Table -->
+                    <div class="table-container">
+
+                        <table class="department-table">
+
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Department ID</th>
+                                    <th style="width: 45%;">Department Name</th>
+                                    <th style="width: 30%;">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="departmentTableBody">
+                                <!-- Rows generated by departments.js -->
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="table-footer">
+                        Department records are displayed above.
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+
+        <!-- Footer -->
+        <footer class="department-footer">
+            © 2026 PharmaFlow - Pharmaceutical Factory Management System
+        </footer>
+
+    </div>
+
+</div>
+
+
+<!-- Add / Edit Department Modal -->
+<div id="departmentModal" class="department-modal hidden">
+
+    <div class="department-modal-panel">
+
+        <!-- Modal Header -->
+        <div class="department-modal-header flex items-center justify-between border-b border-slate-100 px-6 py-5">
+
+            <div>
+                <h3 class="text-xl font-bold text-slate-900">
+                    Department Information
+                </h3>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Enter department details below.
+                </p>
+            </div>
+
+            <button
+                id="closeDepartmentModal"
+                type="button"
+                class="rounded-lg p-2 text-xl text-slate-400 hover:bg-slate-100"
+                aria-label="Close modal">
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- Form -->
+        <form id="departmentForm" class="space-y-6 p-6">
+
+            <div>
+                <label for="departmentId">
+                    Department ID
+                </label>
+
+                <input
+                    id="departmentId"
+                    type="text"
+                    readonly
+                    class="bg-slate-50 text-slate-500">
+            </div>
+
+
+            <div>
+                <label for="departmentName">
+                    Department Name <span class="text-red-500">*</span>
+                </label>
+
+                <input
+                    id="departmentName"
+                    type="text"
+                    required
+                    maxlength="100"
+                    placeholder="Enter department name">
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex flex-col-reverse mt-5 p-2 justify-end gap-3 border-t border-slate-100 pt-5 sm:flex-row">
+
+                <button
+                    id="cancelDepartmentBtn"
+                    type="button"
+                    class="rounded-lg border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50">
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700">
+                    Save Department
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

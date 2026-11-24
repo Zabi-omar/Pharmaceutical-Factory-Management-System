@@ -1,320 +1,607 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard | PharmaFlow</title>
+
     <link rel="stylesheet" href="./assets/css/app.css">
-    <script src="./JS/dashboard.js" defer></script>
+    <script src="./JS/modules/sidebar.js" defer></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .dashboard-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .dashboard-topbar {
+            height: 84px;
+            min-height: 84px;
+            padding: 0 36px;
+        }
+
+        .dashboard-content {
+            width: 100%;
+            max-width: 1850px;
+            margin: 0 auto;
+            padding: 38px 40px;
+        }
+
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+
+        /* Heading */
+        .dashboard-heading h1 {
+            font-size: 30px;
+            line-height: 1.3;
+        }
+
+        .dashboard-heading p {
+            font-size: 15px;
+            margin-top: 9px;
+        }
+
+        /* Statistics */
+        .stat-card {
+            min-height: 170px;
+            padding: 27px;
+            border: 1px solid #e2e8f0;
+            border-radius: 17px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .07);
+        }
+
+        .stat-label {
+            font-size: 15px;
+        }
+
+        .stat-number {
+            margin-top: 20px;
+            font-size: 36px;
+            line-height: 1.2;
+        }
+
+        .stat-description {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            padding: 14px;
+            border-radius: 13px;
+            font-size: 23px;
+        }
+
+        /* General cards */
+        .dashboard-card {
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 17px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
+        }
+
+        .card-title {
+            font-size: 19px;
+            font-weight: 750;
+            color: #1e293b;
+        }
+
+        .card-description {
+            margin-top: 7px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* Production chart placeholder */
+        .chart-placeholder {
+            min-height: 240px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #cbd5e1;
+            border-radius: 13px;
+            background: #f8fafc;
+        }
+
+        /* Factory summary */
+        .summary-list {
+            margin-top: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 19px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 15px;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Recent activities */
+        .activity-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .activity-table thead {
+            background: #f8fafc;
+        }
+
+        .activity-table th {
+            padding: 17px 18px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .activity-table td {
+            padding: 20px 18px;
+            border-top: 1px solid #edf0f5;
+            font-size: 14px;
+        }
+
+        .activity-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Footer */
+        .dashboard-footer {
+            padding: 22px 15px;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-content {
+                padding: 30px 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-topbar {
+                padding: 0 18px;
+            }
+
+            .dashboard-content {
+                padding: 25px 18px;
+            }
+
+            .dashboard-card {
+                padding: 22px;
+            }
+
+            .chart-placeholder {
+                min-height: 210px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .dashboard-content {
+                padding: 22px 13px;
+            }
+
+            .dashboard-heading h1 {
+                font-size: 25px;
+            }
+
+            .stat-card {
+                min-height: 150px;
+                padding: 22px;
+            }
+
+            .dashboard-card {
+                padding: 19px;
+            }
+
+            .dashboard-topbar {
+                height: 76px;
+                min-height: 76px;
+            }
+        }
+     
+
+    </style>
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-800">
+<body class="min-h-screen text-slate-800">
 
     <div class="flex min-h-screen">
 
-        <!-- Mobile Sidebar Overlay -->
-        <div id="sidebarOverlay"
-             class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
-
-        <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-40 flex w-64 -translate-x-full flex-col bg-slate-950 text-white transition-all duration-300 lg:static lg:translate-x-0">
-
-            <!-- Logo -->
-            <div class="flex h-20 items-center gap-3 border-b border-white/10 px-6">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-xl font-bold">
-                    P
-                </div>
-                <div class="sidebar-label">
-                    <h1 class="text-lg font-bold tracking-wide">PharmaFlow</h1>
-                    <p class="text-xs text-slate-400">Factory Management</p>
-                </div>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 space-y-2 overflow-y-auto px-4 py-6">
-
-                <p class="sidebar-label mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Main Menu
-                </p>
-
-                <a href="./dashboard.html"
-                   class="flex items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white">
-                    <span class="text-lg">▦</span>
-                    <span class="sidebar-label">Dashboard</span>
-                </a>
-
-                <p class="sidebar-label mb-3 mt-7 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Management
-                </p>
-
-                <a href="#" class="sidebar-link">
-                    <span>♙</span><span class="sidebar-label">Employees</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>▤</span><span class="sidebar-label">Departments</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>✚</span><span class="sidebar-label">Medicines</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>▣</span><span class="sidebar-label">Raw Materials</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>⚙</span><span class="sidebar-label">Production</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>✓</span><span class="sidebar-label">Quality Control</span>
-                </a>
-
-                <p class="sidebar-label mb-3 mt-7 px-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-                    Business
-                </p>
-
-                <a href="#" class="sidebar-link">
-                    <span>♧</span><span class="sidebar-label">Suppliers</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>🛒</span><span class="sidebar-label">Purchases</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>♧</span><span class="sidebar-label">Customers</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>▧</span><span class="sidebar-label">Sales Orders</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>⇄</span><span class="sidebar-label">Distribution</span>
-                </a>
-
-                <a href="#" class="sidebar-link">
-                    <span>＄</span><span class="sidebar-label">Expenses</span>
-                </a>
-
-            </nav>
-
-            <!-- Sidebar Footer -->
-            <div class="border-t border-white/10 p-4">
-                <button id="logoutBtn"
-                    class="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-red-400 transition hover:bg-red-500/10">
-                    <span class="text-lg">↪</span>
-                    <span class="sidebar-label">Logout</span>
-                </button>
-            </div>
-        </aside>
+        <!-- Shared Sidebar -->
+        <div id="sidebar-container" data-root="./"></div>
 
         <!-- Main Area -->
-        <div class="flex min-w-0 flex-1 flex-col">
+        <div class="dashboard-main flex min-h-screen flex-col">
 
             <!-- Topbar -->
-            <header class="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-4 sm:px-8">
+            <header class="dashboard-topbar sticky top-0 z-20 flex items-center justify-between border-b border-slate-200 bg-white">
 
                 <div class="flex items-center gap-4">
-                    <button id="menuBtn"
-                        class="rounded-lg p-2 text-xl text-slate-600 hover:bg-slate-100">
+
+                    <button
+                        id="menuBtn"
+                        type="button"
+                        class="flex h-10 w-10 items-center justify-center rounded-lg text-xl text-slate-600 transition hover:bg-slate-100">
                         ☰
                     </button>
 
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">Dashboard</h2>
-                        <p class="hidden text-xs text-slate-500 sm:block">
+                        <h2 class="text-lg font-bold text-slate-800">
+                            Dashboard
+                        </h2>
+
+                        <p class="hidden text-sm text-slate-500 sm:block">
                             Welcome to PharmaFlow Management System
                         </p>
                     </div>
+
                 </div>
 
                 <div class="flex items-center gap-4">
 
-                    <button class="relative rounded-lg p-2 text-xl text-slate-500 hover:bg-slate-100">
+                    <button
+                        type="button"
+                        class="relative rounded-lg p-2 text-xl text-slate-500 hover:bg-slate-100">
                         ♧
                         <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"></span>
                     </button>
 
                     <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+
                         <div class="hidden text-right sm:block">
-                            <p class="text-sm font-semibold text-slate-800">Administrator</p>
-                            <p class="text-xs text-slate-500">System Admin</p>
+                            <p class="text-sm font-semibold text-slate-800">
+                                Administrator
+                            </p>
+
+                            <p class="text-xs text-slate-500">
+                                System Admin
+                            </p>
                         </div>
 
-                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700">
                             A
                         </div>
+
                     </div>
 
                 </div>
+
             </header>
 
+
             <!-- Dashboard Content -->
-            <main class="flex-1 space-y-7 overflow-y-auto p-4 sm:p-8">
+            <main class="dashboard-content flex-1">
 
                 <!-- Page Heading -->
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-900">Overview</h1>
-                    <p class="mt-1 text-sm text-slate-500">
+                <section class="dashboard-heading dashboard-section">
+
+                    <h1 class="font-bold text-slate-900">
+                        Overview
+                    </h1>
+
+                    <p class="text-slate-500">
                         Here's what's happening in your pharmaceutical factory.
                     </p>
-                </div>
-
-                <!-- Statistics -->
-                <section class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-
-                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-slate-500">Total Employees</p>
-                            <span class="rounded-xl bg-blue-100 p-3 text-xl text-blue-700">♙</span>
-                        </div>
-                        <h3 class="mt-5 text-3xl font-bold text-slate-900">128</h3>
-                        <p class="mt-2 text-xs text-slate-500">Registered employees</p>
-                    </div>
-
-                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-slate-500">Total Medicines</p>
-                            <span class="rounded-xl bg-green-100 p-3 text-xl text-green-700">✚</span>
-                        </div>
-                        <h3 class="mt-5 text-3xl font-bold text-slate-900">56</h3>
-                        <p class="mt-2 text-xs text-slate-500">Registered medicines</p>
-                    </div>
-
-                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-slate-500">Production Batches</p>
-                            <span class="rounded-xl bg-purple-100 p-3 text-xl text-purple-700">⚙</span>
-                        </div>
-                        <h3 class="mt-5 text-3xl font-bold text-slate-900">24</h3>
-                        <p class="mt-2 text-xs text-slate-500">Total registered batches</p>
-                    </div>
-
-                    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-slate-500">Total Suppliers</p>
-                            <span class="rounded-xl bg-orange-100 p-3 text-xl text-orange-700">♧</span>
-                        </div>
-                        <h3 class="mt-5 text-3xl font-bold text-slate-900">18</h3>
-                        <p class="mt-2 text-xs text-slate-500">Registered suppliers</p>
-                    </div>
 
                 </section>
 
-                <!-- Lower Dashboard Sections -->
-                <section class="grid grid-cols-1 gap-6 xl:grid-cols-3">
 
-                    <!-- Production Overview -->
-                    <div class="rounded-2xl border border-slate-200 bg-white p-6 xl:col-span-2">
+                <!-- Statistics -->
+                <section class="dashboard-section grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+
+                    <!-- Employees -->
+                    <div class="stat-card">
+
                         <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="font-bold text-slate-800">Production Overview</h3>
-                                <p class="mt-1 text-sm text-slate-500">Recent production activity</p>
-                            </div>
-                            <span class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600">
-                                This Month
+                            <p class="stat-label font-semibold text-slate-500">
+                                Total Employees
+                            </p>
+
+                            <span class="stat-icon bg-blue-100 text-xl text-blue-700">
+                                ♙
                             </span>
                         </div>
 
-                        <div class="mt-8 flex h-48 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50">
-                            <p class="text-sm text-slate-400">
+                        <h3 class="stat-number font-bold text-slate-900">
+                            128
+                        </h3>
+
+                        <p class="stat-description text-slate-500">
+                            Registered employees
+                        </p>
+
+                    </div>
+
+
+                    <!-- Medicines -->
+                    <div class="stat-card">
+
+                        <div class="flex items-center justify-between">
+                            <p class="stat-label font-semibold text-slate-500">
+                                Total Medicines
+                            </p>
+
+                            <span class="stat-icon bg-green-100 text-xl text-green-700">
+                                ✚
+                            </span>
+                        </div>
+
+                        <h3 class="stat-number font-bold text-slate-900">
+                            56
+                        </h3>
+
+                        <p class="stat-description text-slate-500">
+                            Registered medicines
+                        </p>
+
+                    </div>
+
+
+                    <!-- Production -->
+                    <div class="stat-card">
+
+                        <div class="flex items-center justify-between">
+                            <p class="stat-label font-semibold text-slate-500">
+                                Production Batches
+                            </p>
+
+                            <span class="stat-icon bg-purple-100 text-xl text-purple-700">
+                                ⚙
+                            </span>
+                        </div>
+
+                        <h3 class="stat-number font-bold text-slate-900">
+                            24
+                        </h3>
+
+                        <p class="stat-description text-slate-500">
+                            Total registered batches
+                        </p>
+
+                    </div>
+
+
+                    <!-- Suppliers -->
+                    <div class="stat-card">
+
+                        <div class="flex items-center justify-between">
+                            <p class="stat-label font-semibold text-slate-500">
+                                Total Suppliers
+                            </p>
+
+                            <span class="stat-icon bg-orange-100 text-xl text-orange-700">
+                                ♧
+                            </span>
+                        </div>
+
+                        <h3 class="stat-number font-bold text-slate-900">
+                            18
+                        </h3>
+
+                        <p class="stat-description text-slate-500">
+                            Registered suppliers
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Production and Summary -->
+                <section class="dashboard-section grid grid-cols-1 gap-7 xl:grid-cols-3">
+
+                    <!-- Production Overview -->
+                    <div class="dashboard-card xl:col-span-2">
+
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+
+                            <div>
+                                <h3 class="card-title">
+                                    Production Overview
+                                </h3>
+
+                                <p class="card-description">
+                                    Recent production activity
+                                </p>
+                            </div>
+
+                            <span class="rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+                                This Month
+                            </span>
+
+                        </div>
+
+                        <div class="chart-placeholder">
+
+                            <p class="text-center text-sm text-slate-400">
                                 Production chart will be added later
                             </p>
+
                         </div>
+
                     </div>
 
-                    <!-- Quick Summary -->
-                    <div class="rounded-2xl border border-slate-200 bg-white p-6">
-                        <h3 class="font-bold text-slate-800">Factory Summary</h3>
-                        <p class="mt-1 text-sm text-slate-500">Current system overview</p>
 
-                        <div class="mt-6 space-y-5">
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-600">Departments</span>
+                    <!-- Factory Summary -->
+                    <div class="dashboard-card">
+
+                        <h3 class="card-title">
+                            Factory Summary
+                        </h3>
+
+                        <p class="card-description">
+                            Current system overview
+                        </p>
+
+                        <div class="summary-list">
+
+                            <div class="summary-row">
+                                <span class="text-slate-600">Departments</span>
                                 <span class="font-bold text-slate-800">8</span>
                             </div>
-                            <div class="h-px bg-slate-100"></div>
 
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-600">Customers</span>
+                            <div class="summary-row">
+                                <span class="text-slate-600">Customers</span>
                                 <span class="font-bold text-slate-800">42</span>
                             </div>
-                            <div class="h-px bg-slate-100"></div>
 
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-600">Distributors</span>
+                            <div class="summary-row">
+                                <span class="text-slate-600">Distributors</span>
                                 <span class="font-bold text-slate-800">12</span>
                             </div>
-                            <div class="h-px bg-slate-100"></div>
 
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-600">Pending Orders</span>
+                            <div class="summary-row">
+                                <span class="text-slate-600">Pending Orders</span>
                                 <span class="font-bold text-orange-600">6</span>
                             </div>
+
                         </div>
+
                     </div>
 
                 </section>
 
-                <!-- Recent Activity -->
-                <section class="rounded-2xl border border-slate-200 bg-white p-6">
-                    <div class="flex items-center justify-between">
+
+                <!-- Recent Activities -->
+                <section class="dashboard-card dashboard-section">
+
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+
                         <div>
-                            <h3 class="font-bold text-slate-800">Recent Activities</h3>
-                            <p class="mt-1 text-sm text-slate-500">Latest factory operations</p>
+                            <h3 class="card-title">
+                                Recent Activities
+                            </h3>
+
+                            <p class="card-description">
+                                Latest factory operations
+                            </p>
                         </div>
-                        <button class="text-sm font-semibold text-blue-600 hover:text-blue-800">
+
+                        <button
+                            type="button"
+                            class="text-sm font-semibold text-blue-600 transition hover:text-blue-800">
                             View All
                         </button>
+
                     </div>
 
-                    <div class="mt-6 overflow-x-auto">
-                        <table class="w-full min-w-[550px] text-left text-sm">
+
+                    <div class="mt-7 overflow-x-auto">
+
+                        <table class="activity-table">
+
                             <thead>
-                                <tr class="border-b border-slate-200 text-xs uppercase text-slate-400">
-                                    <th class="pb-4 font-semibold">Activity</th>
-                                    <th class="pb-4 font-semibold">Date</th>
-                                    <th class="pb-4 font-semibold">Status</th>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100">
+
+                            <tbody>
+
                                 <tr>
-                                    <td class="py-4 font-medium text-slate-700">New medicine batch created</td>
-                                    <td class="py-4 text-slate-500">24 Nov 2026</td>
-                                    <td class="py-4">
-                                        <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">Completed</span>
+                                    <td class="font-semibold text-slate-700">
+                                        New medicine batch created
+                                    </td>
+
+                                    <td class="text-slate-500">
+                                        24 Nov 2026
+                                    </td>
+
+                                    <td>
+                                        <span class="rounded-full bg-green-100 px-3 py-2 text-xs font-semibold text-green-700">
+                                            Completed
+                                        </span>
                                     </td>
                                 </tr>
+
                                 <tr>
-                                    <td class="py-4 font-medium text-slate-700">Quality control inspection</td>
-                                    <td class="py-4 text-slate-500">23 Nov 2026</td>
-                                    <td class="py-4">
-                                        <span class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700">Pending</span>
+                                    <td class="font-semibold text-slate-700">
+                                        Quality control inspection
+                                    </td>
+
+                                    <td class="text-slate-500">
+                                        23 Nov 2026
+                                    </td>
+
+                                    <td>
+                                        <span class="rounded-full bg-yellow-100 px-3 py-2 text-xs font-semibold text-yellow-700">
+                                            Pending
+                                        </span>
                                     </td>
                                 </tr>
+
                                 <tr>
-                                    <td class="py-4 font-medium text-slate-700">Raw material purchase</td>
-                                    <td class="py-4 text-slate-500">22 Nov 2026</td>
-                                    <td class="py-4">
-                                        <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">Processing</span>
+                                    <td class="font-semibold text-slate-700">
+                                        Raw material purchase
+                                    </td>
+
+                                    <td class="text-slate-500">
+                                        22 Nov 2026
+                                    </td>
+
+                                    <td>
+                                        <span class="rounded-full bg-blue-100 px-3 py-2 text-xs font-semibold text-blue-700">
+                                            Processing
+                                        </span>
                                     </td>
                                 </tr>
+
                             </tbody>
+
                         </table>
+
                     </div>
+
                 </section>
 
-                <footer class="pb-2 text-center text-xs text-slate-400">
-                    © 2026 PharmaFlow — Pharmaceutical Factory Management System
-                </footer>
-
             </main>
+
+
+            <!-- Footer -->
+            <footer class="dashboard-footer">
+                © 2026 PharmaFlow — Pharmaceutical Factory Management System
+            </footer>
+
         </div>
+
     </div>
 
 </body>
